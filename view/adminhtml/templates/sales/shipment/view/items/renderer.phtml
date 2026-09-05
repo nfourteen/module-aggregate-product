@@ -1,0 +1,28 @@
+<?php
+/**
+ * @var \Magento\Sales\Block\Adminhtml\Items\Renderer\DefaultRenderer $block
+ * @var \Nfourteen\AggregateProduct\ViewModel\Sales\Order\Items\Renderer $viewModel
+ */
+$_item = $block->getItem();
+$viewModel = $block->getViewModel();
+$children = $_item->getOrderItem()->getChildrenItems();
+?>
+<tr class="border">
+    <td class="col-product"><?= $block->getColumnHtml($_item, 'name') ?></td>
+    <td class="col-qty last"><?= /* @noEscape */ $_item->getQty()*1 ?></td>
+</tr>
+<?php if ($children && count($children) > 0): ?>
+    <tr class="options-label">
+        <td colspan="2">
+            <strong><?= $block->escapeHtml(__('Includes')) ?></strong>
+        </td>
+    </tr>
+    <?php foreach ($children as $child): ?>
+        <tr class="border">
+            <td class="col-product">
+                <div class="option-value"><?= $block->escapeHtml($viewModel->getValueHtml($child)) ?></div>
+            </td>
+            <td class="col-qty last">&nbsp;</td>
+        </tr>
+    <?php endforeach; ?>
+<?php endif; ?>

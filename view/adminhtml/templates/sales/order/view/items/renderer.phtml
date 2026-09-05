@@ -1,0 +1,43 @@
+<?php
+/**
+ * @var \Magento\Sales\Block\Adminhtml\Order\View\Items\Renderer\DefaultRenderer $block
+ * @var \Nfourteen\AggregateProduct\ViewModel\Sales\Order\Items\Renderer $viewModel
+ */
+$_item = $block->getItem();
+$block->setPriceDataObject($_item);
+$viewModel = $block->getViewModel();
+$columns = $block->getColumns();
+$columnCount = count($columns);
+$children = $_item->getChildrenItems();
+?>
+<tr>
+    <?php $i = 0; ?>
+    <?php foreach ($columns as $columnName => $columnClass) : ?>
+        <?php $i++; ?>
+        <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $columnCount ? ' last' : '') ?>">
+            <?= $block->getColumnHtml($_item, $columnName) ?>
+        </td>
+    <?php endforeach; ?>
+</tr>
+<?php if ($children && count($children) > 0): ?>
+    <tr class="options-label">
+        <td colspan="<?= /* @noEscape */ $columnCount ?>">
+            <strong><?= $block->escapeHtml(__('Includes')) ?></strong>
+        </td>
+    </tr>
+    <?php foreach ($children as $child): ?>
+        <tr class="border">
+            <?php $j = 0; ?>
+            <?php foreach ($columns as $columnName => $columnClass) : ?>
+                <?php $j++; ?>
+                <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($j === $columnCount ? ' last' : '') ?>">
+                    <?php if ($j === 1): ?>
+                        <div class="option-value"><?= $block->escapeHtml($viewModel->getValueHtml($child)) ?></div>
+                    <?php else: ?>
+                        &nbsp;
+                    <?php endif; ?>
+                </td>
+            <?php endforeach; ?>
+        </tr>
+    <?php endforeach; ?>
+<?php endif; ?>

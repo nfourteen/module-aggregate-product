@@ -1,0 +1,46 @@
+<?php
+/**
+ * @var \Magento\Sales\Block\Adminhtml\Items\Renderer\DefaultRenderer $block
+ * @var \Nfourteen\AggregateProduct\ViewModel\Sales\Order\Items\Renderer $viewModel
+ */
+$_item = $block->getItem();
+$_item->setStoreId($_item->getInvoice()->getStoreId());
+$block->setPriceDataObject($_item);
+$viewModel = $block->getViewModel();
+$children = $_item->getOrderItem()->getChildrenItems();
+?>
+<tr>
+    <td class="col-product"><?= $block->getColumnHtml($_item, 'name') ?></td>
+    <td class="col-price">
+        <?= $block->getColumnHtml($_item, 'price') ?>
+    </td>
+    <td class="col-qty"><?= (float) $_item->getQty() ?></td>
+    <td class="col-subtotal">
+        <?= $block->getColumnHtml($_item, 'subtotal') ?>
+    </td>
+    <td class="col-tax"><?= /* @noEscape */ $block->displayPriceAttribute('tax_amount') ?></td>
+    <td class="col-discount"><?= /* @noEscape */ $block->displayPriceAttribute('discount_amount') ?></td>
+    <td class="col-total last">
+        <?= $block->getColumnHtml($_item, 'total') ?>
+    </td>
+</tr>
+<?php if ($children && count($children) > 0): ?>
+    <tr class="options-label">
+        <td colspan="7">
+            <strong><?= $block->escapeHtml(__('Includes')) ?></strong>
+        </td>
+    </tr>
+    <?php foreach ($children as $child): ?>
+        <tr class="border">
+            <td class="col-product">
+                <div class="option-value"><?= $block->escapeHtml($viewModel->getValueHtml($child)) ?></div>
+            </td>
+            <td class="col-price">&nbsp;</td>
+            <td class="col-qty">&nbsp;</td>
+            <td class="col-subtotal">&nbsp;</td>
+            <td class="col-tax">&nbsp;</td>
+            <td class="col-discount">&nbsp;</td>
+            <td class="col-total last">&nbsp;</td>
+        </tr>
+    <?php endforeach; ?>
+<?php endif; ?>

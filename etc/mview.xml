@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Nfourteen. All Rights Reserved.
+ * See COPYING.txt for license details.
+ **/
+-->
+<!--
+    Relations writes (add/remove child, qty change) go through RelationMetadata without
+    saving the parent entity, so no core-subscribed table marks the parent dirty. These
+    subscriptions cover scheduled mode; RelationReindexer::reindex() covers on-save.
+
+    - cataloginventory_stock: parent stock status derives from its children.
+    - catalog_product_price: the indexed price value is the parent's own attribute, but row
+      presence in catalog_product_index_price is salability-gated (ProductPriceIndexFilter,
+      MSI-adapted), so a relation change can add or remove the parent's row.
+
+    Child price/stock changes need no subscription here: they reach the parent at index time
+    via the catalog_product_relation mirror (RelationMetadata::syncCatalogRelations()).
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Mview/etc/mview.xsd">
+    <view id="cataloginventory_stock" class="Magento\CatalogInventory\Model\Indexer\Stock" group="indexer">
+        <subscriptions>
+            <table name="catalog_product_aggregate_link" entity_column="parent_id" />
+        </subscriptions>
+    </view>
+    <view id="catalog_product_price" class="Magento\Catalog\Model\Indexer\Product\Price" group="indexer">
+        <subscriptions>
+            <table name="catalog_product_aggregate_link" entity_column="parent_id" />
+        </subscriptions>
+    </view>
+</config>

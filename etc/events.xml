@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="catalog_product_collection_load_after">
+        <observer name="Nfourteen_AggregateProduct::HandleRelationMetadataForProductCollection"
+                  instance="Nfourteen\AggregateProduct\Observer\HandleRelationMetadataForProductCollection"/>
+    </event>
+    <event name="catalog_product_delete_before">
+        <observer name="Nfourteen_AggregateProduct::CaptureParentIdsOnProductDelete"
+                  instance="Nfourteen\AggregateProduct\Observer\CaptureParentIdsOnProductDelete"/>
+    </event>
+    <event name="catalog_product_delete_commit_after">
+        <observer name="Nfourteen_AggregateProduct::InvalidateParentsOnProductDeleteCommit"
+                  instance="Nfourteen\AggregateProduct\Observer\InvalidateParentsOnProductDeleteCommit"/>
+    </event>
+</config>

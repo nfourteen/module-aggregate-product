@@ -1,0 +1,14 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Catalog:etc/product_types.xsd">
+    <type name="aggregate" label="Aggregate Product" modelInstance="Nfourteen\AggregateProduct\Model\Product\Type\Aggregate" composite='true' sortOrder="65">
+        <indexerModel instance="Nfourteen\AggregateProduct\Model\ResourceModel\Product\Indexer\Price\AggregateProductPrice"/>
+        <stockIndexerModel instance="Nfourteen\AggregateProduct\Model\ResourceModel\Indexer\Stock\Aggregate"/>
+        <allowedSelectionTypes>
+            <type name="simple"/>
+            <type name="virtual"/>
+        </allowedSelectionTypes>
+        <customAttributes>
+            <attribute name="refundable" value="true"/>
+        </customAttributes>
+    </type>
+</config>

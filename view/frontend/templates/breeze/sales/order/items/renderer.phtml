@@ -1,0 +1,90 @@
+<?php
+/**
+ * @var \Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\Locale\LocaleFormatter $localeFormatter
+ * @var \Nfourteen\AggregateProduct\ViewModel\Sales\Order\Items\Renderer $viewModel
+ * @var \Magento\Sales\Model\Order\Item $parentItem
+ */
+$parentItem = $block->getItem();
+$viewModel = $block->getViewModel();
+// Children are already linked in-memory on the loaded order item collection
+// (Order\Item\Collection::_afterLoad), so read them directly instead of re-querying per parent row.
+$items = array_merge([$parentItem], $parentItem->getChildrenItems());
+?>
+
+<?php foreach ($items as $index => $item): ?>
+    <?php if ($item->getParentItem() && $index === 1): ?>
+        <tr class="options-label">
+            <td class="col label" colspan="5"><?= $escaper->escapeHtml(__('Includes')); ?></td>
+        </tr>
+    <?php endif; ?>
+    <tr id="order-item-row-<?= /* @noEscape */ $item->getId() ?>"
+        class="<?= $escaper->escapeHtmlAttr($viewModel->getOrderItemRowClassName($item)) ?>"
+        <?php if ($item->getParentItem()): ?>
+            data-th="<?= $escaper->escapeHtmlAttr(__('Includes')); ?>"
+        <?php endif; ?>>
+        <?php if (!$item->getParentItem()): ?>
+            <td class="col name" data-th="<?= $escaper->escapeHtmlAttr(__('Product Name')); ?>">
+                <strong class="product name product-item-name"><?= $escaper->escapeHtml($item->getName()); ?></strong>
+            </td>
+        <?php else: ?>
+            <td class="col value" data-th="<?= $escaper->escapeHtmlAttr(__('Product Name')); ?>">
+                <?= $escaper->escapeHtml($viewModel->getValueHtml($item)); ?>
+            </td>
+        <?php endif; ?>
+        <td class="col sku" data-th="<?= $escaper->escapeHtmlAttr(__('SKU')); ?>">
+            <?= /* @noEscape */ $block->prepareSku($item->getSku()); ?>
+        </td>
+        <td class="col price" data-th="<?= $escaper->escapeHtmlAttr(__('Price')); ?>">
+            <?php if (!$item->getParentItem()): ?>
+                <?= /* @noEscape */ $block->getItemPriceHtml(); ?>
+            <?php else: ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+        <td class="col qty" data-th="<?= $escaper->escapeHtml(__('Qty')) ?>">
+            <ul class="items-qty">
+                <?php if ($item->getQtyOrdered() > 0): ?>
+                    <li class="item">
+                        <span class="title"><?= $escaper->escapeHtml(__('Ordered')) ?></span>
+                        <span class="content">
+                        <?= $escaper->escapeHtml($localeFormatter->formatNumber((float) $item->getQtyOrdered()))?>
+                        </span>
+                    </li>
+                <?php endif; ?>
+                <?php if ($item->getQtyShipped() > 0): ?>
+                    <li class="item">
+                        <span class="title"><?= $escaper->escapeHtml(__('Shipped')) ?></span>
+                        <span class="content">
+                        <?= $escaper->escapeHtml($localeFormatter->formatNumber((float) $item->getQtyShipped()))?>
+                        </span>
+                    </li>
+                <?php endif; ?>
+                <?php if ($item->getQtyCanceled() > 0): ?>
+                    <li class="item">
+                        <span class="title"><?= $escaper->escapeHtml(__('Canceled')) ?></span>
+                        <span class="content">
+                        <?= $escaper->escapeHtml($localeFormatter->formatNumber((float) $item->getQtyCanceled()))?>
+                        </span>
+                    </li>
+                <?php endif; ?>
+                <?php if ($item->getQtyRefunded() > 0): ?>
+                    <li class="item">
+                        <span class="title"><?= $escaper->escapeHtml(__('Refunded')) ?></span>
+                        <span class="content">
+                        <?= $escaper->escapeHtml($localeFormatter->formatNumber((float) $item->getQtyRefunded()))?>
+                        </span>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </td>
+        <td class="col subtotal" data-th="<?= $escaper->escapeHtmlAttr(__('Subtotal')) ?>">
+            <?php if (!$item->getParentItem()): ?>
+                <?= /* @noEscape */ $block->getItemRowTotalHtml(); ?>
+            <?php else: ?>
+                &nbsp;
+            <?php endif; ?>
+        </td>
+    </tr>
+<?php endforeach; ?>

@@ -1,0 +1,19 @@
+{
+    "catalog_product_aggregate_link": {
+        "column": {
+            "link_id": true,
+            "product_id": true,
+            "parent_id": true,
+            "qty": true
+        },
+        "index": {
+            "CATALOG_PRODUCT_AGGREGATE_LINK_PARENT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "CATALOG_PRODUCT_AGGREGATE_LINK_PRODUCT_ID_PARENT_ID": true,
+            "CAT_PRD_AGGRE_LNK_PRD_ID_CAT_PRD_ENTT_ENTT_ID": true,
+            "CAT_PRD_AGGRE_LNK_PARENT_ID_CAT_PRD_ENTT_ENTT_ID": true
+        }
+    }
+}

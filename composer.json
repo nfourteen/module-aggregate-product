@@ -1,0 +1,21 @@
+{
+  "name": "nfourteen/module-aggregate-product",
+  "description": "Sell groups of products at fixed quantities.",
+  "type": "magento2-module",
+  "require": {
+    "php": ">=8.3",
+    "magento/framework": "*",
+    "magento/module-catalog": "104.0.*"
+  },
+  "license": [
+    "Proprietary"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Nfourteen\\AggregateProduct\\": ""
+    }
+  }
+}

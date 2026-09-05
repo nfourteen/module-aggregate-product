@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Nfourteen\AggregateProduct\Api\Data\RelationMetadataInterface" type="Nfourteen\AggregateProduct\Model\RelationMetadata"/>
+    <preference for="Nfourteen\AggregateProduct\Api\RelationMetadataRepositoryInterface" type="Nfourteen\AggregateProduct\Model\RelationMetadataRepository"/>
+    <preference for="Nfourteen\AggregateProduct\Api\Data\LinkedProductInterface" type="Nfourteen\AggregateProduct\Model\LinkedProduct"/>
+    <preference for="Nfourteen\AggregateProduct\Api\LinkedProductProviderInterface" type="Nfourteen\AggregateProduct\Model\LinkedProductProvider"/>
+
+    <!--
+        Persist aggregate_relations inside the product save before the save-time reindex and post-commit callbacks run.
+    -->
+    <type name="Magento\Framework\EntityManager\Operation\ExtensionPool">
+        <arguments>
+            <argument name="extensionActions" xsi:type="array">
+                <item name="Magento\Catalog\Api\Data\ProductInterface" xsi:type="array">
+                    <item name="create" xsi:type="array">
+                        <item name="create_aggregate_relations" xsi:type="string">Nfourteen\AggregateProduct\Model\Product\SaveHandler</item>
+                    </item>
+                    <item name="update" xsi:type="array">
+                        <item name="update_aggregate_relations" xsi:type="string">Nfourteen\AggregateProduct\Model\Product\SaveHandler</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Nfourteen\AggregateProduct\Model\ResourceModel\Product\Indexer\Price\AggregateProductPrice" type="Magento\Catalog\Model\ResourceModel\Product\Indexer\Price\SimpleProductPrice">
+        <arguments>
+            <argument name="productType" xsi:type="string">aggregate</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Catalog\Api\ProductRepositoryInterface">
+        <plugin name="Nfourteen_AggregateProduct::HandleRelationMetadataForRepository"
+                type="Nfourteen\AggregateProduct\Plugin\HandleRelationMetadataForRepository"/>
+    </type>
+
+    <type name="Magento\Catalog\Helper\Product">
+        <arguments>
+            <argument name="reindexPriceIndexerData" xsi:type="array">
+                <item name="byDataResult" xsi:type="array">
+                    <item name="aggregate_relations_changed" xsi:type="string">aggregate_relations_changed</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Catalog\Model\Product">
+        <plugin name="Nfourteen_AggregateProduct::ProductIdentitiesExtender"
+                type="Nfourteen\AggregateProduct\Plugin\Catalog\Product\ProductIdentitiesExtender"/>
+    </type>
+
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="Nfourteen_AggregateProduct::SetQuoteItemOptionsOnOrderItem"
+                type="Nfourteen\AggregateProduct\Plugin\SetQuoteItemOptionsOnOrderItem"/>
+    </type>
+
+    <type name="Magento\SalesRule\Model\Rule\Condition\Product">
+        <plugin name="Nfourteen_AggregateProduct::IsolateAggregateChildrenFromCartRules"
+                type="Nfourteen\AggregateProduct\Plugin\SalesRule\Model\Rule\Condition\ProductPlugin"/>
+    </type>
+
+    <type name="Magento\CatalogInventory\Observer\SaveInventoryDataObserver">
+        <arguments>
+            <argument name="parentItemProcessorPool" xsi:type="array">
+                <item name="aggregate" xsi:type="object">Nfourteen\AggregateProduct\Model\Inventory\ParentItemProcessor</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\CatalogInventory\Plugin\MassUpdateProductAttribute">
+        <arguments>
+            <argument name="parentItemProcessorPool" xsi:type="array">
+                <item name="aggregate" xsi:type="object">Nfourteen\AggregateProduct\Model\Inventory\ParentItemProcessor</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

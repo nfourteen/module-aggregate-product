@@ -1,0 +1,17 @@
+<?php
+/**
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Nfourteen\AggregateProduct\Block\Product\View\Type\Aggregate $block
+ */
+
+/** @var \Nfourteen\AggregateProduct\ViewModel\LinkedProducts $linkedProductViewModel */
+$linkedProductViewModel = $block->getData('linked_product_view_model');
+?>
+<div class="aggregate-summary">
+    <strong class="subtitle"><?= $escaper->escapeHtml(__('Includes:')) ?></strong>
+    <ul class="aggregate items">
+        <?php foreach ($linkedProductViewModel->get($block->getProduct()) as $info) : ?>
+        <li><?= $escaper->escapeHtml($linkedProductViewModel->getValueHtml($info->getData('qty'), $info->getData('name'))) ?></li>
+        <?php endforeach; ?>
+    </ul>
+</div>

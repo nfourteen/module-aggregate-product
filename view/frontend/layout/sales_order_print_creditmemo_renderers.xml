@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="sales.order.print.creditmemo.renderers">
+            <block class="Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer" name="sales.order.print.creditmemo.renderers.aggregate" as="aggregate" template="Nfourteen_AggregateProduct::breeze/sales/order/creditmemo/items/renderer.phtml"/>
+        </referenceBlock>
+        <referenceBlock name="sales.order.print.creditmemo.renderers.aggregate">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Nfourteen\AggregateProduct\ViewModel\Sales\Order\Items\Renderer</argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

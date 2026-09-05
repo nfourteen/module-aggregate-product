@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Catalog\Controller\Adminhtml\Product\Initialization\Helper">
+        <plugin name="Nfourteen_AggregateProduct::SetRelationMetadataOnProductInitialize"
+                type="Nfourteen\AggregateProduct\Plugin\Admin\SetRelationMetadataOnProductInitialize"/>
+    </type>
+    <virtualType name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="aggregate" xsi:type="array">
+                    <item name="class" xsi:type="string">Nfourteen\AggregateProduct\Ui\DataProvider\Product\Form\Modifier\Composite</item>
+                    <item name="sortOrder" xsi:type="number">70</item>
+                </item>
+                <item name="aggregate_stock_data" xsi:type="array">
+                    <item name="class" xsi:type="string">Nfourteen\AggregateProduct\Ui\DataProvider\Product\Form\Modifier\StockData</item>
+                    <item name="sortOrder" xsi:type="number">190</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Nfourteen\AggregateProduct\Ui\DataProvider\Product\Form\Modifier\Composite">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="aggregateWeight" xsi:type="string">Nfourteen\AggregateProduct\Ui\DataProvider\Product\Form\Modifier\AggregateWeight</item>
+                <item name="aggregatePanel" xsi:type="string">Nfourteen\AggregateProduct\Ui\DataProvider\Product\Form\Modifier\AggregatePanel</item>
+                <item name="aggregateModal" xsi:type="string">Nfourteen\AggregateProduct\Ui\DataProvider\Product\Form\Modifier\AggregateModal</item>
+                <item name="aggregateProductsListing" xsi:type="string">Nfourteen\AggregateProduct\Ui\DataProvider\Product\Form\Modifier\AggregateProductsListing</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

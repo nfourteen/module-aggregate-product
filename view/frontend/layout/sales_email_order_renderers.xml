@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="sales.email.order.renderers">
+            <block class="Magento\Sales\Block\Order\Email\Items\Order\DefaultOrder" name="sales.email.order.renderers.aggregate" as="aggregate" template="Nfourteen_AggregateProduct::email/order/items/order/default.phtml"/>
+        </referenceBlock>
+        <referenceBlock name="sales.email.order.renderers.aggregate">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Nfourteen\AggregateProduct\ViewModel\Sales\Order\Items\Renderer</argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>
