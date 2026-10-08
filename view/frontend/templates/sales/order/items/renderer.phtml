@@ -8,9 +8,7 @@
  */
 $parentItem = $block->getItem();
 $viewModel = $block->getViewModel();
-// Children are already linked in-memory on the loaded order item collection
-// (Order\Item\Collection::_afterLoad), so read them directly instead of re-querying per parent row.
-$items = array_merge([$parentItem], $parentItem->getChildrenItems());
+$items = array_merge([$parentItem], $viewModel->getChildItems($parentItem));
 ?>
 
 <?php foreach ($items as $index => $item): ?>
