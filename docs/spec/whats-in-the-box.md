@@ -123,7 +123,7 @@ Both flags are used as `ifconfig` attributes in layout XML to control block visi
 
 ### Template
 
-New template: `Nfourteen_AggregateProduct::breeze/product/view/whats_in_the_box.phtml`
+New template: `Nfourteen_AggregateProduct::product/view/whats_in_the_box.phtml`
 
 ```
 ┌─────────────────────────────────────────────────┐
@@ -163,7 +163,7 @@ Implemented via CSS grid with media queries. Gap between cards: ~16px.
 
 ### Layout XML Placement
 
-The block is added to the PDP layout in `breeze_catalog_product_view_type_aggregate.xml`, positioned after the existing `product.info.details` block.
+The block is added to the PDP layout in `catalog_product_view_type_aggregate.xml`, positioned after the existing `product.info.details` block.
 
 ---
 
@@ -204,7 +204,7 @@ Follow the pattern used by Magento's category image and CMS image uploads:
 | `LinkedProductProvider`      | `Model/LinkedProductProvider.php`                                     | `LOAD_FULL` already loads `thumbnail`; extend or reuse |
 | `LinkedProducts` view model  | `ViewModel/LinkedProducts.php`                                        | Existing PDP data provider for text summary            |
 | `LinkedProductFormatter`     | `Service/LinkedProductFormatter.php`                                  | "qty x name" formatting                               |
-| Breeze layout XML            | `view/frontend/layout/breeze_catalog_product_view_type_aggregate.xml` | Existing PDP layout to extend                          |
+| PDP layout XML               | `view/frontend/layout/catalog_product_view_type_aggregate.xml`        | Existing PDP layout to extend                          |
 
 ### No Sort Order
 
