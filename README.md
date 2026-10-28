@@ -2,6 +2,9 @@
 
 Sell a group of products at fixed quantities as a single Magento 2 product, while still tracking each child's own inventory.
 
+> [!WARNING]
+> **Beta - not for production use.** This module is part of the Aggregate Product suite, which is in beta. It has no tagged releases yet, known bugs are still being fixed, and behavior, configuration and stored data may change between commits without an upgrade path. Use it in development or staging environments only.
+
 ## How it works
 
 Adding an aggregate to the cart adds its children as separate line items, each linked to the parent, each quantity multiplied by the configured one. A child can belong to several aggregates, which then share its inventory.
