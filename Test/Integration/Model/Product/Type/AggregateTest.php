@@ -204,7 +204,7 @@ class AggregateTest extends TestCase
         $grouped = $type->getChildrenIds($parentId);
 
         $this->assertCount(1, $grouped, 'a single required group is returned');
-        $this->assertContainsOnly('array', $grouped, null, 'outer array holds groups, not flat ids');
+        $this->assertContainsOnlyArray($grouped, 'outer array holds groups, not flat ids');
 
         // Core consumes the grouped shape via array_merge(...$grouped); this must not TypeError.
         $flattened = array_map('intval', array_merge(...$grouped));
